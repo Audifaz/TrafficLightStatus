@@ -108,14 +108,20 @@ class HomeFragment : Fragment() {
     private val scanCallback = object : ScanCallback() {
         override fun onScanResult(callbackType: Int, result: ScanResult?) {
             super.onScanResult(callbackType, result)
-            Log.i("GalleryFragment", "scanCallback")
             if (result != null) {
                 try {
                     val scannerBytecode =
                         result.scanRecord?.getManufacturerSpecificData(NORDIC_MANUFACTURING_ID)
                             ?.toUByteArray()!!
                     val rd = ReaderData().extractReaderData(scannerBytecode)
-                    Log.i("GalleryFragment", "onScanResult: Device ${rd?.id}}")
+                    if(rd?.dev_id == 5205L){
+                        Log.i("GalleryFragment", "onScanResult: Device ${rd?.dev_id}} & ${rd.got_id} & ${rd.scanning} ")
+                        if(rd.scanning && !rd.got_id){
+                            Log.i("TrafficLight", "Red Status")
+                        } else if (!rd.scanning && rd.got_id){
+                            Log.i("TrafficLight", "Green Status")
+                        }
+                    }
                 }catch (e: NullPointerException){
                     Log.e("TryCatch", "ScanCallback: Null PointerException")
                 }
