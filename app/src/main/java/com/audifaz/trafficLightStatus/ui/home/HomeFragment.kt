@@ -33,6 +33,7 @@ class HomeFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -106,6 +107,8 @@ class HomeFragment : Fragment() {
         bluetoothManager.adapter
     }
 
+    var state = ""
+
     @OptIn(ExperimentalUnsignedTypes::class)
     private val scanCallback = object : ScanCallback() {
         override fun onScanResult(callbackType: Int, result: ScanResult?) {
@@ -118,11 +121,13 @@ class HomeFragment : Fragment() {
                     val rd = ReaderData().extractReaderData(scannerBytecode)
                     if(rd?.dev_id == 5205L){
 //                        Log.i("GalleryFragment", "onScanResult: Device ${rd?.dev_id}} & ${rd.got_id} & ${rd.scanning} ")
-                        if(rd.scanning && !rd.got_id){
-//                            Log.i("TrafficLight", "Red Status")
+                        if(rd.scanning && !rd.got_id && !state.equals("Red")){
+                            Log.i("TrafficLight", "Red Status")
+                            state="Red"
                             homeViewModel.setText("Red Status")
-                        } else if (!rd.scanning && rd.got_id){
-//                            Log.i("TrafficLight", "Green Status")
+                        } else if (!rd.scanning && rd.got_id && !state.equals("Green")){
+                            Log.i("TrafficLight", "Green Status")
+                            state="Green"
                             homeViewModel.setText("Green Status")
                         }
                     }
@@ -134,3 +139,33 @@ class HomeFragment : Fragment() {
     }
 
 }
+
+//                        if(!toggle){
+//                            if (diffTime == -1000L) {
+//                                diffTime = currentTime
+//                            } else {
+//                                diffTime = System.currentTimeMillis() - currentTime
+//                            }
+//                            currentTime = System.currentTimeMillis()
+//                            counter++
+//                            diffSum += diffTime
+//                            if (counter == 100) {
+//                                Log.i("TIME_TEST_AVG", "Average: ${diffSum / 100}")
+//                                diffSum = 0L
+//                                counter = 1
+//                            }
+//                            Log.i("TIME_TEST", "${diffTime}")
+//                        }
+
+//currentTimeUi = System.currentTimeMillis()
+//diffTimeUi = currentTimeUi-currentTime
+//Log.i("UI_TEST", "$diffTimeUi")
+//toggle= false
+
+//var currentTime =  0L
+//var diffTime = -1000L
+//var counter = 1
+//var diffSum = 0L
+//var toggle = false
+//var currentTimeUi = 0L
+//var diffTimeUi = 0L
