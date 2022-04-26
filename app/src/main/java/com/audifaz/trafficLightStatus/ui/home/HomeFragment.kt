@@ -7,6 +7,7 @@ import android.bluetooth.le.ScanFilter
 import android.bluetooth.le.ScanResult
 import android.bluetooth.le.ScanSettings
 import android.content.Context
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.provider.Settings.Global.DEVICE_NAME
 import android.util.Log
@@ -48,6 +49,11 @@ class HomeFragment : Fragment() {
         val textView: TextView = binding.textHome
         homeViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
+            if(!it.equals("Waiting")){
+                val mediaPlayer: MediaPlayer =
+                    MediaPlayer.create(requireActivity(), R.raw.beep)
+                mediaPlayer.start()
+            }
         }
         binding.buttonStart.setOnClickListener {
             //Toast.makeText(requireContext(), "Listening started", Toast.LENGTH_LONG).show()
