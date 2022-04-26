@@ -9,5 +9,10 @@ class HomeViewModel : ViewModel() {
     private val _text = MutableLiveData<String>().apply {
         value = "Waiting"
     }
+
+    fun setText(value: String){
+        _text.postValue(value)
+    }
+
     val text: LiveData<String> = _text
 }

@@ -27,6 +27,7 @@ import com.audifaz.trafficLightStatus.util.UC_NAME
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
+    lateinit var homeViewModel : HomeViewModel
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -37,7 +38,7 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
+        homeViewModel =
             ViewModelProvider(this).get(HomeViewModel::class.java)
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
@@ -105,6 +106,7 @@ class HomeFragment : Fragment() {
         bluetoothManager.adapter
     }
 
+    @OptIn(ExperimentalUnsignedTypes::class)
     private val scanCallback = object : ScanCallback() {
         override fun onScanResult(callbackType: Int, result: ScanResult?) {
             super.onScanResult(callbackType, result)
@@ -115,15 +117,17 @@ class HomeFragment : Fragment() {
                             ?.toUByteArray()!!
                     val rd = ReaderData().extractReaderData(scannerBytecode)
                     if(rd?.dev_id == 5205L){
-                        Log.i("GalleryFragment", "onScanResult: Device ${rd?.dev_id}} & ${rd.got_id} & ${rd.scanning} ")
+//                        Log.i("GalleryFragment", "onScanResult: Device ${rd?.dev_id}} & ${rd.got_id} & ${rd.scanning} ")
                         if(rd.scanning && !rd.got_id){
-                            Log.i("TrafficLight", "Red Status")
+//                            Log.i("TrafficLight", "Red Status")
+                            homeViewModel.setText("Red Status")
                         } else if (!rd.scanning && rd.got_id){
-                            Log.i("TrafficLight", "Green Status")
+//                            Log.i("TrafficLight", "Green Status")
+                            homeViewModel.setText("Green Status")
                         }
                     }
-                }catch (e: NullPointerException){
-                    Log.e("TryCatch", "ScanCallback: Null PointerException")
+                }catch (e: Exception){
+                    Log.e("TryCatch", e.toString())
                 }
             }
         }
