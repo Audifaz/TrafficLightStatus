@@ -130,11 +130,11 @@ class HomeFragment : Fragment() {
                         if(rd.scanning && !rd.got_id && !state.equals("Red")){
                             Log.i("TrafficLight", "Red Status")
                             state="Red"
-                            homeViewModel.setText("Red Status")
+                            homeViewModel.setText("Red")
                         } else if (!rd.scanning && rd.got_id && !state.equals("Green")){
                             Log.i("TrafficLight", "Green Status")
                             state="Green"
-                            homeViewModel.setText("Green Status")
+                            homeViewModel.setText("Green")
                         }
                     }
                 }catch (e: Exception){
